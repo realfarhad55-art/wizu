@@ -1,0 +1,71 @@
+# skipcall — integration patch (VPS + GitHub)
+# File: skipcall.py (36593 bytes) — GitHub par NEW file ke tor par upload karo.
+# Neeche 3 edits hain. Har edit ke baad py_compile + restart.
+#
+# ============================================================
+# EDIT 1 — bot.py  (_PIECES me "skipcall" add karo)
+# ============================================================
+# Purani line:
+#   _PIECES = ["core", "launchpad", "dropped_call", "x_alert", "leaderboard", "commands", "most_shared", "runtime"]
+# Nayi line:
+#   _PIECES = ["core", "launchpad", "dropped_call", "x_alert", "leaderboard", "commands", "most_shared", "skipcall", "runtime"]
+# (skipcall runtime se PEHLE aana chahiye taake register_skipcall main() me mile.)
+#
+# ============================================================
+# EDIT 2 — runtime.py  (2 jagah)
+# ============================================================
+# (a) main() me, register_most_shared(app) ke BAAD, ye line add karo:
+#       register_skipcall(app)
+#     Exact context (line ~3691):
+#       register_most_shared(app)   # /postmostshared + /mostsharedtest + daily auto post
+#       register_skipcall(app)      # <-- ADD THIS (Call Fix top button)
+#       register_extras(app)
+#
+# (b) handle_message() me, "Button wizards" block ke BAAD, userbot login
+#     flow se PEHLE, ye block add karo:
+#       # ── Skipcall / Late-track fix flow (naya top button) ─────────────────
+#       if uid in OWNER_IDS and context.user_data.get("skipcall", {}).get("flow"):
+#           try:
+#               if msg.text and await sc_on_text(update, context):
+#                   return
+#           except Exception as e_sc:
+#               logger.error(f"skipcall text error: {e_sc}")
+#
+# ============================================================
+# EDIT 3 — commands.py  (top button + "Masla Aa Raha Hai?" hatao)
+# ============================================================
+# (a) _OH_PANELS_RAW dict se "fix" wali entry DELETE karo (poori entry,
+#     "fix": ("🆘 Masla Aa Raha Hai? — Fix Karo", ... ) se le kar uske
+#     closing "])," tak). Is se ownerhelp se wo panel khatam ho jayega.
+#     (oh:fix: handler reh jayega lekin unreachable ho ga — koi nuqsan nahi.)
+#
+# (b) _oh_main_kb() me top button add karo. Purani function:
+#       def _oh_main_kb():
+#           rows = [[InlineKeyboardButton(v[0], callback_data=f"oh:p:{k}")] for k, v in OH_PANELS.items()]
+#           return InlineKeyboardMarkup(rows)
+#     Nayi function:
+#       def _oh_main_kb():
+#           rows = [[InlineKeyboardButton("🔧 Call Fix — Skipped / Late Track", callback_data="sc:menu")]]
+#           rows += [[InlineKeyboardButton(v[0], callback_data=f"oh:p:{k}")] for k, v in OH_PANELS.items()]
+#           return InlineKeyboardMarkup(rows)
+#
+# ============================================================
+# DEPLOY (ek batch)
+# ============================================================
+# 1. GitHub: skipcall.py NEW file upload + bot.py + runtime.py + commands.py upload.
+# 2. VPS:
+#      cd /opt/bot
+#      cp bot.py bot.py.bak_sc; cp runtime.py runtime.py.bak_sc; cp commands.py commands.py.bak_sc
+#      wget -O skipcall.py https://raw.githubusercontent.com/realfarhad55-art/wizu/main/skipcall.py
+#      wget -O bot.py https://raw.githubusercontent.com/realfarhad55-art/wizu/main/bot.py
+#      wget -O runtime.py https://raw.githubusercontent.com/realfarhad55-art/wizu/main/runtime.py
+#      wget -O commands.py https://raw.githubusercontent.com/realfarhad55-art/wizu/main/commands.py
+#      /opt/bot/venv/bin/python -m py_compile skipcall.py bot.py runtime.py commands.py
+#      systemctl restart bot
+#      systemctl status bot --no-pager | head -3
+# 3. Test: /ownerhelp -> top par "🔧 Call Fix" button -> Skipped Call / Late Track.
+#
+# NOTE: skipcall.py khud /addmissedcall jaisa core use karta hai (dropped
+# post pehle, phir X alert; champion ho to send_alert khud video + champion
+# template lagata hai). 100x miss ho to sirf top (100x) alert bhejta hai,
+# beech wale milestones sirf record me mark hote hain.
