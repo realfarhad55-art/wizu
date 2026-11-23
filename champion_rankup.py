@@ -160,83 +160,80 @@ RANKUP_CHAMPIONS_URL = "https://t.me/WizardScan/134"
 # the same string.
 RANKUP_COPY = {
     (None, 5): (
-        "{channel} Enters the Top 5 Champions",
-        "A new name just broke into the top 5. @{channel} is now "
-        "#5 on the WizardScan Champion leaderboard with {points} points. "
-        "The elite five has a new member.",
+        "{channel} Breaks Into the Top 5",
+        "@{channel} broke into the Top 5 with {points} points and became "
+        "Champion KOL Rank #5. A new challenger has entered the elite five.",
     ),
     (5, 4): (
-        "{channel} Climbs to #4",
-        "@{channel} is not stopping. Up from #5 to #4 with {points} points, "
-        "and the gap above is closing fast.",
+        "{channel} Climbs to Rank #4",
+        "@{channel} climbed to Champion KOL Rank #4 with {points} points. "
+        "The Top 3 is right above, and the climb is not over yet.",
     ),
     (4, 3): (
-        "{channel} Takes the #3 Spot",
-        "Top 3. @{channel} moved from #4 to #3 with {points} points. Only "
-        "two champions stand above now.",
+        "{channel} Hits Rank #3",
+        "@{channel} hit Champion KOL Rank #3 with {points} points and entered "
+        "the Top 3. The fight for #1 is getting serious now.",
     ),
     (3, 2): (
-        "{channel} Reaches #2",
-        "@{channel} has secured the #2 Position on the Champion KOLs "
-        "leaderboard with {points} points! Boom..",
+        "{channel} Moves Up to Rank #2",
+        "@{channel} moved up to Champion KOL Rank #2 with {points} points. "
+        "At this pace, #1 is not far. This KOL will not take long to reach the top.",
     ),
     (2, 1): (
-        "{channel} Is the #1 Champion",
-        "@{channel} has taken the top spot on the WizardScan "
-        "Champion leaderboard with {points} points. The best caller on "
-        "WizardScan right now.",
+        "{channel} Takes Rank #1",
+        "@{channel} is now Champion KOL Rank #1 on WizardScan with {points} points. "
+        "The top spot is theirs now, and every other KOL is chasing them.",
     ),
-    # Generic direct entries (not in the spec — see note above).
+    # Generic direct entries (not in the spec - see note above).
     (None, 4): (
-        "{channel} Enters at #4",
-        "@{channel} is now #4 on the WizardScan Champion leaderboard with "
-        "{points} points. A new name in the elite five.",
+        "{channel} Joins the Top 5 at #4",
+        "@{channel} joined the Top 5 at Champion KOL Rank #4 with {points} points. "
+        "The Top 3 is right above, and the climb is not over yet.",
     ),
     (None, 3): (
-        "{channel} Enters at #3",
-        "@{channel} is now #3 on the WizardScan Champion leaderboard with "
-        "{points} points. A new name in the elite five.",
+        "{channel} Enters the Top 3",
+        "@{channel} entered the Top 3 at Champion KOL Rank #3 with {points} points. "
+        "The fight for #1 is getting serious now.",
     ),
     (None, 2): (
-        "{channel} Enters at #2",
-        "@{channel} is now #2 on the WizardScan Champion leaderboard with "
-        "{points} points. One step from the top.",
+        "{channel} Debuts at Rank #2",
+        "@{channel} debuted at Champion KOL Rank #2 with {points} points. "
+        "At this pace, #1 is not far. This KOL will not take long to reach the top.",
     ),
     (None, 1): (
-        "{channel} Is the #1 Champion",
-        "@{channel} has taken the top spot on the WizardScan "
-        "Champion leaderboard with {points} points. The best caller on "
-        "WizardScan right now.",
+        "{channel} Takes Rank #1",
+        "@{channel} is now Champion KOL Rank #1 on WizardScan with {points} points. "
+        "The top spot is theirs now, and every other KOL is chasing them.",
     ),
     # Generic champion entries at ranks 6-10 (Nov 16): a channel that
     # newly qualifies as a champion (100+ points AND a real 2x+ call)
     # but lands below the top 5 still gets one post. Titles use
-    # "{channel}" (no @) like every other title — the channel name
+    # "{channel}" (no @) like every other title - the channel name
     # links to the Champions post; paragraphs keep "@{channel}".
     (None, 6): (
         "{channel} Becomes a Champion KOL",
-        "@{channel} has earned {points} points and joined the "
-        "WizardScan Champion KOLs.",
+        "@{channel} has earned {points} points and became "
+        "Champion KOL Rank #6.",
     ),
     (None, 7): (
         "{channel} Becomes a Champion KOL",
-        "@{channel} has earned {points} points and joined the "
-        "WizardScan Champion KOLs.",
+        "@{channel} has earned {points} points and became "
+        "Champion KOL Rank #7.",
     ),
     (None, 8): (
         "{channel} Becomes a Champion KOL",
-        "@{channel} has earned {points} points and joined the "
-        "WizardScan Champion KOLs.",
+        "@{channel} has earned {points} points and became "
+        "Champion KOL Rank #8.",
     ),
     (None, 9): (
         "{channel} Becomes a Champion KOL",
-        "@{channel} has earned {points} points and joined the "
-        "WizardScan Champion KOLs.",
+        "@{channel} has earned {points} points and became "
+        "Champion KOL Rank #9.",
     ),
     (None, 10): (
         "{channel} Becomes a Champion KOL",
-        "@{channel} has earned {points} points and joined the "
-        "WizardScan Champion KOLs.",
+        "@{channel} has earned {points} points and became "
+        "Champion KOL Rank #10.",
     ),
 }
 
@@ -251,10 +248,10 @@ def _g(name, default=None):
 
 
 def _rankup_display(channel):
-    """First letter upper, rest UNTOUCHED (Nov 14 name-cap fix).
-    NOTE: core._display_handle lowercases the rest — do NOT use it here."""
+    """First letter upper, rest lower (RANKUP_NAMECAP_NOV17: @Channel,
+    not @CHANNEL)."""
     raw = str(channel or "").lstrip("@").strip()
-    return raw[:1].upper() + raw[1:] if raw else raw
+    return raw[:1].upper() + raw[1:].lower() if raw else raw
 
 
 def _rankup_fmt_x(x):
@@ -328,6 +325,50 @@ def _rankup_tg_emoji(emoji_id, fallback):
     """Bot API <tg-emoji> tag (same shape as core._history_emoji)."""
     return (f'<tg-emoji emoji-id="{emoji_id}">'
             f"{html.escape(str(fallback))}</tg-emoji>")
+
+
+def _rankup_build_entities(parsed_text, base_entities, emoji_ids):
+    """Positional-only premium-emoji entities for rank-up posts.
+    (RANKUP_EMOJI_FIX_NOV17) The shared _build_premium_entities has
+    special cases that mis-fire on rank-up rows: its MC-separator teer
+    lock reads a numeric-looking token symbol ($1.0) followed by an X
+    value (2x) as an entry-MC/current-MC pair, so that row's arrow gets
+    the red teer emoji and every later emoji shifts by one. Seen live
+    Nov 17: yellow rank-1 $1.0 row, purple rank-5 $S07 row. Rank-up
+    text has NO MC values and needs NO special cases, so assign
+    emoji_ids strictly in placeholder order. Same UTF-16 offset math
+    as the shared builder; base (bold/link) entities are kept."""
+    try:
+        from telethon.tl.types import MessageEntityCustomEmoji
+    except Exception:
+        return base_entities or []
+    ids = []
+    try:
+        ids = [int(e) for e in (emoji_ids or []) if e]
+    except Exception:
+        ids = []
+    if not ids:
+        return base_entities or []
+    PH = "\U0001F52E"
+    PH_LEN = len(PH)
+    emoji_u16 = len(PH.encode("utf-16-le")) // 2
+    custom = []
+    pos_index = 0
+    utf16_off = 0
+    i = 0
+    text = str(parsed_text or "")
+    while i < len(text):
+        if text[i:i + PH_LEN] == PH:
+            eid = ids[min(pos_index, len(ids) - 1)]
+            pos_index += 1
+            custom.append(MessageEntityCustomEmoji(
+                offset=utf16_off, length=emoji_u16, document_id=int(eid)))
+            utf16_off += emoji_u16
+            i += PH_LEN
+            continue
+        utf16_off += len(text[i].encode("utf-16-le")) // 2
+        i += 1
+    return (base_entities or []) + custom
 
 
 def _rankup_strip_tg_emoji(text):
@@ -606,6 +647,145 @@ def _rankup_save_ranks(ranks):
             os.replace(tmp, path)
     except Exception as e:
         _rankup_log.warning(f"🏆 Rank-up: state save failed {path}: {e}")
+
+
+# --- Per-stint rank-up dedup (RANKUP_DEDUP_NOV20) ---
+# Rule (user, 2026-11-20): ranks 2-5 alert ONCE per champion stint. Once a
+# rank's alert has fired, it never fires again in the same stint, even if
+# the channel drops and climbs back to that rank. Rank 1 alerts EVERY time
+# it is reached (no dedup). When a channel leaves the top 10 (points fall
+# below 100), its record is wiped, so a fresh stint alerts at 5/4/3/2
+# again, once each. Ranks 6-10 new-champion entries are untouched.
+# State file: data/rankup_alerted.json, {channel_lower: [ranks]}.
+# Only successful posts are marked (a failed post retries next run, same
+# as the stored-rank failure rule). A skipped event still advances the
+# stored rank (via _rankup_next_state) so the job does not re-detect it
+# every 20s.
+
+RANKUP_ALERTED_FILE = "rankup_alerted.json"  # data/rankup_alerted.json on VPS
+
+
+def _rankup_alerted_path():
+    dp = _g("_dp")
+    if callable(dp):
+        try:
+            return dp(RANKUP_ALERTED_FILE)
+        except Exception:
+            pass
+    data_dir = _g("DATA_DIR") or "."
+    return os.path.join(str(data_dir), RANKUP_ALERTED_FILE)
+
+
+def _rankup_load_alerted():
+    """Return {channel_lower: [ranks alerted in the current stint]}.
+    Only ranks 2-5 are ever stored (rank 1 is never deduped). A missing
+    or corrupt file returns {} (fresh stint for everyone)."""
+    path = _rankup_alerted_path()
+    if not os.path.exists(path):
+        return {}
+    load = _g("load_json")
+    try:
+        if callable(load):
+            data = load(path, {})
+        else:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+    except Exception as e:
+        _rankup_log.warning(f"Rank-up: alerted file unreadable, starting fresh: {e}")
+        return {}
+    out = {}
+    try:
+        for k, v in dict(data or {}).items():
+            ranks = sorted({int(r) for r in (v or []) if 2 <= int(r) <= 5})
+            if ranks:
+                out[str(k).lower()] = ranks
+    except Exception:
+        return {}
+    return out
+
+
+def _rankup_save_alerted(alerted):
+    """Atomic when the bot's save_json is available (same fix as core.py)."""
+    path = _rankup_alerted_path()
+    clean = {}
+    for k, v in dict(alerted or {}).items():
+        ranks = sorted({int(r) for r in (v or []) if 2 <= int(r) <= 5})
+        if ranks:
+            clean[str(k).lower()] = ranks
+    save = _g("save_json")
+    try:
+        if callable(save):
+            save(path, clean)
+        else:
+            tmp = f"{path}.tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(clean, f, indent=2, ensure_ascii=False)
+            os.replace(tmp, path)
+    except Exception as e:
+        _rankup_log.warning(f"Rank-up: alerted save failed {path}: {e}")
+
+
+def _rankup_filter_events(events, alerted):
+    """Dedup top-5 rank-up events per champion stint (pure, unit-tested).
+    Rank 1 always passes (alerts every time). Ranks 2-5 pass only if
+    that rank has not alerted yet in this stint. Rank 6-10 events (new
+    champions) pass untouched. Returns (kept, skipped)."""
+    kept, skipped = [], []
+    for ev in (events or []):
+        try:
+            nr = int(ev.get("new_rank"))
+        except (TypeError, ValueError):
+            kept.append(ev)
+            continue
+        if nr == 1:
+            kept.append(ev)
+        elif 2 <= nr <= 5:
+            key = str(ev.get("channel", "")).lstrip("@").strip().lower()
+            if nr in (alerted or {}).get(key, []):
+                skipped.append(ev)
+            else:
+                kept.append(ev)
+        else:
+            kept.append(ev)
+    return kept, skipped
+
+
+def _rankup_mark_alerted(alerted, ok_events):
+    """Record ranks 2-5 that just posted successfully. Rank 1 is never
+    recorded (it always alerts). Returns the updated dict."""
+    out = {str(k).lower(): sorted({int(r) for r in (v or []) if 2 <= int(r) <= 5})
+           for k, v in dict(alerted or {}).items()}
+    for ev in (ok_events or []):
+        try:
+            nr = int(ev.get("new_rank"))
+        except (TypeError, ValueError):
+            continue
+        if 2 <= nr <= 5:
+            key = str(ev.get("channel", "")).lstrip("@").strip().lower()
+            ranks = set(out.get(key, []))
+            ranks.add(nr)
+            out[key] = sorted(ranks)
+    return out
+
+
+def _rankup_prune_alerted(alerted, current_top10):
+    """Drop alerted records for channels no longer in the top 10 (they
+    left Champions, so the next stint starts fresh). Also sanitizes
+    stored ranks to 2-5 and drops empty lists. Returns
+    (pruned_dict, removed_keys)."""
+    keep = {str(c or "").lstrip("@").strip().lower()
+            for c in (current_top10 or [])}
+    pruned = {}
+    removed = []
+    for k, v in dict(alerted or {}).items():
+        key = str(k).lower()
+        if key in keep:
+            ranks = sorted({int(r) for r in (v or []) if 2 <= int(r) <= 5})
+            if ranks:
+                pruned[key] = ranks
+        else:
+            removed.append(key)
+    return pruned, removed
 
 
 # ─── Detection (pure — unit-tested without the bot) ───────────────────────────
@@ -941,6 +1121,70 @@ async def _rankup_forward_to_owner(bot, channel, wizard_post_id):
         return False
 
 
+async def _rankup_forward_linked(bot, channel, wizard_post_id):
+    """Forward the rank-up post to the KOL's linked channels and its own
+    channel - same distribution as the X alerts, because a rank-up is an
+    important post. (RANKUP_FORWARD_NOV17)
+    - Linked channels: BOTH /linkme (full) and /linksmart (smart) targets
+      get the post. The smart X-milestone filter does NOT apply here: a
+      rank-up is not an X alert, so there is no X value to filter on.
+    - Own channel: auto-forward via _auto_forward_to_own_channel when
+      the bot is admin there. Skipped only when a linked target IS the
+      own channel (the link loop already sent it there - no duplicate).
+    - The owner DM is NOT done here (_rankup_forward_to_owner does it).
+    Best-effort, never raises, never fails the rank-up."""
+    if not wizard_post_id:
+        return
+    ch_key = str(channel or "").lstrip("@").strip().lower()
+    if not ch_key:
+        return
+    target = _g("TARGET_CHANNEL") or "@WizardScan"
+    forward_fn = _g("_forward_alert_post")
+    try:
+        load_linked = _g("load_linked_channels")
+        linked = dict(load_linked()) if callable(load_linked) else {}
+    except Exception:
+        linked = {}
+    own_linked = False
+    for kol_ch, link_val in (linked or {}).items():
+        if str(kol_ch).lstrip("@").lower() != ch_key:
+            continue
+        if isinstance(link_val, dict):
+            tgt = link_val.get("target")
+        else:
+            tgt = link_val
+        if not tgt:
+            continue
+        if str(tgt).lstrip("@").strip().lower() == ch_key:
+            own_linked = True
+        label = f"(KOL @{ch_key} rank-up)"
+        try:
+            if callable(forward_fn):
+                ok = await forward_fn(bot, tgt, wizard_post_id, label=label)
+            else:
+                await bot.forward_message(
+                    chat_id=tgt, from_chat_id=target,
+                    message_id=int(wizard_post_id))
+                ok = True
+            if ok:
+                _rankup_log.info(
+                    f"🏆 Rank-up post {wizard_post_id} forwarded to "
+                    f"linked {tgt} @{channel}")
+        except Exception as e:
+            _rankup_log.warning(
+                f"🏆 Rank-up linked forward failed @{channel} -> {tgt}: "
+                f"{type(e).__name__}: {e}")
+    try:
+        auto_fn = _g("_auto_forward_to_own_channel")
+        if callable(auto_fn):
+            await auto_fn(bot, ch_key, wizard_post_id,
+                          already_linked={ch_key} if own_linked else set())
+    except Exception as e:
+        _rankup_log.warning(
+            f"🏆 Rank-up own-channel forward failed @{channel}: "
+            f"{type(e).__name__}: {e}")
+
+
 async def _rankup_send_video_post(bot, channel, rank, msg, video_path,
                                   target=None):
     """Send the rank-up video post. Userbot first (premium emojis, no edit
@@ -977,7 +1221,6 @@ async def _rankup_send_video_post(bot, channel, rank, msg, video_path,
     if clients:
         try:
             from telethon.extensions.html import parse as tl_html_parse
-            build_ents = _g("_build_premium_entities")
             prepare = _g("prepare_owner_emojis")
             txt, explicit = ("", {})
             if callable(prepare):
@@ -988,9 +1231,12 @@ async def _rankup_send_video_post(bot, channel, rank, msg, video_path,
             else:
                 txt = plain
             parsed_text, base_ents = tl_html_parse(txt)
-            if len(parsed_text) <= 1024 and callable(build_ents):
-                all_ents = build_ents(parsed_text, base_ents, emoji_ids,
-                                      explicit=explicit)
+            if len(parsed_text) <= 1024:
+                # RANKUP_EMOJI_FIX_NOV17: positional-only entities (see
+                # _rankup_build_entities) - the shared builder's teer lock
+                # mis-fires on rank-up rows and shifts later emojis.
+                all_ents = _rankup_build_entities(parsed_text, base_ents,
+                                                  emoji_ids)
                 pick = _g("_pick_userbot")
                 first = pick() if callable(pick) else (clients[0] if clients else None)
                 ordered = ([first] if first else []) + [
@@ -1059,8 +1305,8 @@ async def _rankup_send_video_post(bot, channel, rank, msg, video_path,
 
 async def _rankup_post_rankup(bot, channel, new_rank, old_rank):
     """One rank-change post: points -> alpha calls -> message -> video ->
-    channel post -> owner-DM forward. Returns True only if the @WizardScan
-    channel post went out. Never raises.
+    channel post -> owner-DM + linked/own-channel forwards. Returns True
+    only if the @WizardScan channel post went out. Never raises.
     Failure rule (deliberate, see DEPLOY.md):
     - Channel post fails -> False, stored rank NOT updated, next run
       retries the same change (existing behaviour, unchanged).
@@ -1098,6 +1344,16 @@ async def _rankup_post_rankup(bot, channel, new_rank, old_rank):
             _rankup_log.warning(
                 f"🏆 Rank-up owner DM failed @{channel} -> #{new_rank}: "
                 f"{type(e).__name__}: {e} — channel post stands")
+        # Rank-up is an important post: also forward to the KOL's linked
+        # channels (/linkme + /linksmart) and its own channel.
+        # Best-effort like the owner DM - a forward failure never fails
+        # the rank-up or re-triggers the channel post.
+        try:
+            await _rankup_forward_linked(bot, channel, post_id)
+        except Exception as e:  # defensive: _rankup_forward_linked never raises
+            _rankup_log.warning(
+                f"🏆 Rank-up linked forward failed @{channel} -> "
+                f"#{new_rank}: {type(e).__name__}: {e} — channel post stands")
         return True
     except Exception as e:
         _rankup_log.warning(
@@ -1135,6 +1391,19 @@ async def champion_rankup_job(context):
             return
         events = _rankup_detect_changes(old, names)
         events += _rankup_detect_new_champions(old, names10)
+        # RANKUP_DEDUP_NOV20: per-stint dedup for top-5 ranks. Rank 1
+        # always posts; ranks 2-5 post once per stint; ranks 6-10
+        # new-champion entries are never filtered. Leavers reset.
+        alerted = _rankup_load_alerted()
+        alerted, _removed = _rankup_prune_alerted(alerted, names10)
+        for _key in _removed:
+            _rankup_log.info(
+                f"Rank-up: @{_key} left Champions, alerted record reset")
+        events, skipped = _rankup_filter_events(events, alerted)
+        for _ev in skipped:
+            _rankup_log.info(
+                f"Rank-up: @{_ev['channel']} -> #{_ev['new_rank']} already "
+                "alerted this stint, skipping")
         # Diagnostic: a champion sitting outside the top 5 whose rank
         # moved (or dropped out of the top 5) gets no post — log it so
         # the journal shows why. New champions at 6-10 DO post (the
@@ -1152,7 +1421,9 @@ async def champion_rankup_job(context):
                     "(outside top 5) — no post")
         if not events:
             # Still persist: ranks may have worsened / leavers dropped.
-            _rankup_save_ranks(_rankup_next_state(old, names10, []))
+            # Skipped events count as done for state (no re-detect spam).
+            _rankup_save_ranks(_rankup_next_state(old, names10, skipped))
+            _rankup_save_alerted(alerted)
             return
         ok_events = []
         for ev in events:
@@ -1169,7 +1440,12 @@ async def champion_rankup_job(context):
                 _rankup_log.warning(
                     f"🏆 Rank-up: post failed @{ev['channel']} -> "
                     f"#{ev['new_rank']}, rank NOT updated — retry next run")
-        _rankup_save_ranks(_rankup_next_state(old, names10, ok_events))
+        # Skipped events count as done for state (no re-detect spam);
+        # only actually-posted ranks 2-5 are marked as alerted.
+        _rankup_save_ranks(_rankup_next_state(old, names10,
+                                              ok_events + skipped))
+        alerted = _rankup_mark_alerted(alerted, ok_events)
+        _rankup_save_alerted(alerted)
     except Exception as e:
         _rankup_log.error(f"🏆 Rank-up job error (continuing): {e}")
 
@@ -1299,3 +1575,4 @@ async def cmd_testrankup(update, context):
         _rankup_log.warning(f"🏆 /testrankup failed: {e}")
         await update.message.reply_text(
             "⚠️ Preview failed — check the logs and try again.")
+# RANKUP_COPY_NOV17
